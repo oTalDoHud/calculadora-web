@@ -1,7 +1,7 @@
 package com.example.teste4.model;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,39 +10,37 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Entity
-@Table(name = "Tb_user")
-public class User implements Serializable{
+@Table(name = "Tb_Operations")
+public class Operation implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name = "Nick_Name", unique = true)
-	private String nickName;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, 
+			pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",
+			timezone = "GMT")
+	private Instant moment;
 	
-	@Column(name = "E_mail", unique = true)
-	private String email;
+	@Column(name = "First_Number")
+	private Double n1;
 	
-	private String password;
+	@Column(name = "Secund_Number")
+	private Double n2;
+	
+	private User user;
 
-	public User() {
-
-	}
-	
-	public User(String nickName, String email, String password) {
-		this.nickName = nickName;
-		this.email = email;
-		this.password = password;
-	}
-	
-	public User(Integer id, String nickName, String email, String password) {
+	public Operation(Integer id, Instant moment, Double n1, Double n2, User user) {
 		super();
 		this.id = id;
-		this.nickName = nickName;
-		this.email = email;
-		this.password = password;
+		this.moment = moment;
+		this.n1 = n1;
+		this.n2 = n2;
+		this.user = user;
 	}
 
 	public Integer getId() {
@@ -53,28 +51,36 @@ public class User implements Serializable{
 		this.id = id;
 	}
 
-	public String getNickName() {
-		return nickName;
+	public Instant getMoment() {
+		return moment;
 	}
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
+	public void setMoment(Instant moment) {
+		this.moment = moment;
 	}
 
-	public String getEmail() {
-		return email;
+	public Double getN1() {
+		return n1;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setN1(Double n1) {
+		this.n1 = n1;
 	}
 
-	public String getPassword() {
-		return password;
+	public Double getN2() {
+		return n2;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setN2(Double n2) {
+		this.n2 = n2;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
@@ -93,7 +99,7 @@ public class User implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		User other = (User) obj;
+		Operation other = (Operation) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
